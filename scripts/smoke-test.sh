@@ -2,8 +2,8 @@
 # Builds one mock's image, runs it, exercises its send/inspect/clear endpoints, and tears it
 # down. Used by CI (one matrix job per mock) and locally (./scripts/smoke-test.sh twilio-mock).
 #
-# Requires: docker, curl, jq. Binds the mock's default port on the host, so don't run this
-# while `docker compose up` is already using that port.
+# Requires: docker, curl, jq. Binds an ephemeral host port (not the mock's default port), so
+# this is safe to run even while `docker compose up` already has the real stack running.
 set -euo pipefail
 
 MOCK="${1:?usage: smoke-test.sh <twilio-mock|sendgrid-mock|postmark-mock>}"
@@ -20,7 +20,6 @@ esac
 
 IMAGE="smoke-test/$MOCK"
 CONTAINER="smoke-test-$MOCK"
-BASE="http://localhost:$PORT"
 
 cleanup() {
   docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
@@ -30,8 +29,12 @@ trap cleanup EXIT
 echo "==> [$MOCK] building image"
 docker build -q -t "$IMAGE" "$MOCK" >/dev/null
 
-echo "==> [$MOCK] starting container on port $PORT"
-docker run -d --name "$CONTAINER" -p "$PORT:$PORT" "$IMAGE" >/dev/null
+echo "==> [$MOCK] starting container (ephemeral host port -> container port $PORT)"
+docker run -d --name "$CONTAINER" -p "127.0.0.1::$PORT" "$IMAGE" >/dev/null
+
+HOST_PORT=$(docker port "$CONTAINER" "$PORT" | head -n1 | cut -d: -f2)
+BASE="http://localhost:$HOST_PORT"
+echo "    -> $BASE"
 
 echo "==> [$MOCK] waiting for /health"
 for i in $(seq 1 30); do

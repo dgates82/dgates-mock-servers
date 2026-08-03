@@ -40,9 +40,9 @@ endpoints against the real container — no compose stack required:
 ./scripts/smoke-test-all.sh              # runs all three in sequence
 ```
 
-Requires `docker`, `curl`, and `jq`. These bind each mock's default port on the host, so don't
-run them while `docker compose up` is already using those ports. CI runs the same script as one
-matrix job per mock, on every push and PR.
+Requires `docker`, `curl`, and `jq`. Each run binds an ephemeral host port, so it's safe to run
+alongside an active `docker compose up` stack. CI runs the same script as one matrix job per
+mock, on every push and PR.
 
 ## Making changes
 
