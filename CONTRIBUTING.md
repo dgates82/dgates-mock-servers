@@ -30,6 +30,20 @@ docker compose up -d --wait
 docker compose down -v
 ```
 
+## Smoke tests
+
+Each mock has a smoke test that builds its image, runs it, and exercises the send/inspect/clear
+endpoints against the real container — no compose stack required:
+
+```sh
+./scripts/smoke-test.sh twilio-mock      # or sendgrid-mock, postmark-mock
+./scripts/smoke-test-all.sh              # runs all three in sequence
+```
+
+Requires `docker`, `curl`, and `jq`. These bind each mock's default port on the host, so don't
+run them while `docker compose up` is already using those ports. CI runs the same script as one
+matrix job per mock, on every push and PR.
+
 ## Making changes
 
 - Branch from `main`, open a PR.
