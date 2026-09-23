@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- README: replaced the "Used by" list with a package-ecosystem table, added an "Also in the
+  box" section documenting the LocalStack (SNS) and Mailpit (SMTP) images bundled in
+  `docker-compose.yml` alongside the three built mocks.
+
 ### Fixed
 - README's "Used by" section no longer says `DGates.Identity.NotificationProviders` and
   `angular-dotnet-auth-template` are private — both are public.
+- `docker-compose.yml`'s `localstack` service had a leftover `container_name` from a
+  different repo — now `dgates-mock-servers-localstack`.
 
 ## [1.0.0] - 2026-08-03
 
