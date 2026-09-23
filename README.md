@@ -30,6 +30,13 @@ built independently for consistency with the other two mocks in this repo (match
 request/response shapes, matching inspection-endpoint conventions) rather than because a gap was
 found in that project.
 
+## Also in the box
+
+`docker-compose.yml` brings up two official images alongside the three mocks this repo builds:
+`localstack/localstack:3` (SNS, port 4566) and `axllent/mailpit:latest` (SMTP, ports 1025/8025).
+Between the three built mocks and these two, `docker compose up -d --wait` gives you a complete
+local stand-in for every provider `DGates.Identity.NotificationProviders` supports, in one shot.
+
 ## Usage
 
 Each mock runs standalone — pull the image and run it:
@@ -60,17 +67,21 @@ All three images are versioned together under one repo-wide tag (e.g. `v1.0.0` b
 even if only one changed) rather than independently. Pin to a specific version in any consumer's
 `docker-compose.yml` — don't float on `:latest`.
 
-## Used by
+## Part of a small ecosystem
 
-- [`DGates.Identity.NotificationProviders`](https://github.com/dgates82/DGates.Identity.NotificationProviders)
-- [`angular-dotnet-auth-template`](https://github.com/dgates82/angular-dotnet-auth-template)
+| Project | What it is | Reach for it when |
+| --- | --- | --- |
+| **dgates-mock-servers** (you are here) | Public GHCR images mocking SendGrid, Twilio, and Postmark, plus a compose file bundling LocalStack (SNS) and Mailpit | you want to develop or test notification flows with no vendor accounts |
+| [DGates.Identity.NotificationProviders](https://github.com/dgates82/DGates.Identity.NotificationProviders) | Email/SMS senders for ASP.NET Core Identity — its local dev stack and tests run against these mocks | you want the library these mocks exist to support |
+| [angular-dotnet-auth-template](https://github.com/dgates82/angular-dotnet-auth-template) | Angular + .NET auth starter — its [live demo](https://angular-dotnet-auth-template-1019453023791.us-central1.run.app) runs `sendgrid-mock`/`twilio-mock` as their own Cloud Run services | you want to see these mocks running live, in production, not just locally |
+| [dotnet-nuget-release-template](https://github.com/dgates82/dotnet-nuget-release-template) | The GitHub template `NotificationProviders` was scaffolded from | more from the same portfolio |
 
 ## Scope
 
-These mocks implement only the subset of each vendor's API that the consumers above actually
-call — not full API parity with the real service. If you need a real feature and this mock
-doesn't cover it, that's a legitimate gap to raise as an issue, not an oversight to silently work
-around.
+These mocks implement only the subset of each vendor's API that `DGates.Identity.NotificationProviders`
+and `angular-dotnet-auth-template` actually call — not full API parity with the real service. If
+you need a real feature and this mock doesn't cover it, that's a legitimate gap to raise as an
+issue, not an oversight to silently work around.
 
 ## Contributing
 
