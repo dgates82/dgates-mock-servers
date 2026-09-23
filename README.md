@@ -65,9 +65,6 @@ even if only one changed) rather than independently. Pin to a specific version i
 - [`DGates.Identity.NotificationProviders`](https://github.com/dgates82/DGates.Identity.NotificationProviders)
 - [`angular-dotnet-auth-template`](https://github.com/dgates82/angular-dotnet-auth-template)
 
-Both are currently private repos, so those links won't resolve for anyone outside the org until
-they're made public.
-
 ## Scope
 
 These mocks implement only the subset of each vendor's API that the consumers above actually
