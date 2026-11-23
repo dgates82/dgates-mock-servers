@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-23
+
 ### Changed
 - README: replaced the "Used by" list with a package-ecosystem table, added an "Also in the
   box" section documenting the LocalStack (SNS) and Mailpit (SMTP) images bundled in
@@ -17,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `angular-dotnet-auth-template` are private — both are public.
 - `docker-compose.yml`'s `localstack` service had a leftover `container_name` from a
   different repo — now `dgates-mock-servers-localstack`.
+- `sendgrid-mock` and `postmark-mock` inbox pages used an absolute `/api/messages` path,
+  which broke when served behind a reverse-proxy path prefix (e.g. `/mock-email/`). Now
+  relative, so they resolve correctly at the root and under a prefix.
 
 ## [1.0.0] - 2026-08-03
 
